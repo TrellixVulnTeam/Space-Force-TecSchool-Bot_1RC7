@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
+const { Console } = require("console");
 const fs = require("fs");
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -26,30 +27,27 @@ module.exports = {
 			let fail = `${quote} has failed to be added`;
 			if (fs.existsSync(path)) {
 				if (fs.readFileSync(path, "utf-8") == "") {
-					fs.appendFileSync(path, quote, function (err) {
-						if (err) {
-							reply(fail);
-						} else {
-							reply(success);
-						}
-					});
+					try {
+						fs.appendFileSync(path, quote);
+					} catch (err) {
+						reply(fail);
+					}
+					reply(success);
 				} else {
-					fs.appendFileSync(path, `\n${quote}`, function (err) {
-						if (err) {
-							reply(fail);
-						} else {
-							reply(success);
-						}
-					});
+					try {
+						fs.appendFileSync(path, `\n${quote}`);
+					} catch (err) {
+						reply(fail);
+					}
+					reply(success);
 				}
 			} else {
-				fs.writeFileSync(path, quote, function (err) {
-					if (err) {
-						reply(fail);
-					} else {
-						reply(success);
-					}
-				});
+				try {
+					fs.writeFileSync(path, quote);
+				} catch (err) {
+					reply(fail);
+				}
+				reply(success);
 			}
 		} else if (interaction.options.getSubcommand() === "send") {
 			if (fs.existsSync(path) && fs.readFileSync(path, "utf-8") != "") {
@@ -65,7 +63,8 @@ module.exports = {
 		}
 
 		function reply(message) {
-			 interaction.reply(message);
+			interaction.reply(message);
+
 		}
 	},
 };

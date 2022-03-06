@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "update-commands": "node src/deploy-commands.js",
     "run": "node src/app.js"
   },
   "keywords": [],
@@ -16,8 +15,10 @@
     "discord-api-types": "^0.27.3",
     "discord.js": "^13.6.0",
     "dotenv": "^16.0.0",
+    "envfile": "^6.17.0",
     "node": "^17.5.0",
     "nodemon": "^2.0.15",
-    "npm": "^8.5.2"
+    "npm": "^8.5.2",
+    "prompt-sync": "^4.2.0"
   }
 }
