@@ -23,14 +23,14 @@ function run() {
 	(async () => {
 		for (let index = 0; index < guildId.length; index++) {
 			try {
-				console.log("Started refreshing application (/) commands.");
+				console.log(`Started refreshing application(${guildId[index]}) (/) commands.`);
 				await rest.put(
 					Routes.applicationGuildCommands(clientId, guildId[index]),
 					{
 						body: commands,
 					}
 				);
-				console.log("Successfully reloaded application (/) commands.");
+				console.log(`Successfully reloaded application(${guildId[index]}) (/) commands.`);
 			} catch (error) {
 				console.error(error);
 			}
