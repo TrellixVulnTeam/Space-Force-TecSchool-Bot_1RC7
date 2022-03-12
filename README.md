@@ -6,3 +6,4 @@
 -Swear jar 
 -Weather 
 -Random kind words of encouragement
+-role assignments
