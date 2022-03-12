@@ -1,3 +1,2 @@
 /.env
-/src/config/quotes
-/src/config/config.json
+/src/config

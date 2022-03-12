@@ -8,7 +8,7 @@ const clientId = process.env.CLIENT_ID;
 function run() {
 	let config = fs.readFileSync("./src/config/config.json");
 	config = JSON.parse(config);
-	let guildId = config.guildId;
+	let guildId = config.guilds;
 	const commands = [];
 	const commandFiles = fs
 		.readdirSync("./src/commands")
