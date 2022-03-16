@@ -16,7 +16,7 @@ function run() {
 		.filter((file) => file.endsWith(".js"));
 
 	for (const file of commandFiles) {
-		const command = require(path.join(__dirname`./commands/${file}`));
+		const command = require(path.join(__dirname,`./commands/${file}`));
 		commands.push(command.data.toJSON());
 	}
 	const rest = new REST({ version: "9" }).setToken(token);
