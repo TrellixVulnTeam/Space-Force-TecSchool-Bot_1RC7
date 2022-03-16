@@ -1,5 +1,7 @@
 #!/bin/sh
 
+#sudo chmod 744 run.sh
+
 while : ; do
   if ping -q -c 1 -W 1 google.com >/dev/null; then
     break
