@@ -36,7 +36,20 @@ client.on("interactionCreate", async (interaction) => {
 	}
 });
 
-client.once("ready", () => {
+client.once("ready",async () => {
+	// const Guilds = client.guilds.cache.map((guild) => guild);
+	// for (let index = 0; index < Guilds.length; index++) {
+
+		
+	
+	// const all_fetchedCommands = await Guilds[index].commands.fetch();
+	// console.log(all_fetchedCommands)
+	// const pingCommand = all_fetchedCommands.find(command => command.name === 'ping');
+	// const pingCommandId = pingCommand.permissions.commandId; 
+
+	// const pingCommandName = pingCommand.permissions.manager.name;
+	//await Guilds[index].commands.permissions.set({ fullPermissions });
+//}
 	console.log("Ready!");
 });
 

@@ -2,9 +2,9 @@
   "name": "sfbot",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "run": "node src/app.js"
+    "run": "node ./src/app.js"
   },
   "keywords": [],
   "author": "",
