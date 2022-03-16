@@ -7,7 +7,6 @@ while : ; do
   fi
 done
 
-cd Space-Force-TecSchool-Bot
+sudo apt-get update && sudo apt-get upgrade -y
 git config pull.ff only
 git pull https://github.com/UtCrypticiores/Space-Force-TecSchool-Bot.git
-su pi -c 'node /home/pi/Space-Force-TecSchool-Bot/src/app.js < /dev/null &'
