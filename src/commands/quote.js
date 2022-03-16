@@ -20,7 +20,7 @@ module.exports = {
 				)
 		),
 	async execute(interaction) {
-		let path = `./src/config/quotes/${interaction.guild.id}.txt`;
+		let path = path.join(__dirname,`./src/config/quotes/${interaction.guild.id}.txt`);
 		if (interaction.options.getSubcommand() === "add") {
 			let quote = interaction.options.getString("quote");
 			let success = `${quote} has been added`;
