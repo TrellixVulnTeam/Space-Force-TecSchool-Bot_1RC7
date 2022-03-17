@@ -1,5 +1,5 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
-const { Console } = require("console");
+const { SlashCommandBuilder } = require("@discordjs/builders");;
+const path = require("path")
 const fs = require("fs");
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -20,22 +20,22 @@ module.exports = {
 				)
 		),
 	async execute(interaction) {
-		let path = path.join(__dirname,`./src/config/quotes/${interaction.guild.id}.txt`);
+		let configPath = path.join(__dirname,`../config/quotes/${interaction.guild.id}.txt`);
 		if (interaction.options.getSubcommand() === "add") {
 			let quote = interaction.options.getString("quote");
 			let success = `${quote} has been added`;
 			let fail = `${quote} has failed to be added`;
-			if (fs.existsSync(path)) {
-				if (fs.readFileSync(path, "utf-8") == "") {
+			if (fs.existsSync(configPath)) {
+				if (fs.readFileSync(configPath, "utf-8") == "") {
 					try {
-						fs.appendFileSync(path, quote);
+						fs.appendFileSync(configPath, quote);
 					} catch (err) {
 						reply(fail);
 					}
 					reply(success);
 				} else {
 					try {
-						fs.appendFileSync(path, `\n${quote}`);
+						fs.appendFileSync(configPath, `\n${quote}`);
 					} catch (err) {
 						reply(fail);
 					}
@@ -43,16 +43,16 @@ module.exports = {
 				}
 			} else {
 				try {
-					fs.writeFileSync(path, quote);
+					fs.writeFileSync(configPath, quote);
 				} catch (err) {
 					reply(fail);
 				}
 				reply(success);
 			}
 		} else if (interaction.options.getSubcommand() === "send") {
-			if (fs.existsSync(path) && fs.readFileSync(path, "utf-8") != "") {
+			if (fs.existsSync(configPath) && fs.readFileSync(configPath, "utf-8") != "") {
 				let quotes = [];
-				let text = fs.readFileSync(path, "utf-8");
+				let text = fs.readFileSync(configPath, "utf-8");
 				quotes = text.split("\n");
 				let R = Math.floor(Math.random() * (quotes.length - 1 - 1)) + 1;
 				console.log;
