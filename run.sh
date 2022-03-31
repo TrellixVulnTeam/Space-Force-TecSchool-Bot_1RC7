@@ -1,4 +1,4 @@
- a#!/bin/sh
+ #!/bin/sh
 
 #sudo chmod 744 run.sh
 
