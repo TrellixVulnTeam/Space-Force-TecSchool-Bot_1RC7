@@ -5,9 +5,9 @@ const path = require("path");
 
 function button(interaction) {
     let pollPath = path.join(
-        __dirname,
-        `../resources/polls/${interaction.guild.id}.json`
-    );
+            __dirname,
+            `../config/polls/${interaction.guild.id}.json`
+        );
     let json;
     let fail = `json has failed to be added`;
     let id = JSON.parse(interaction.customId);
@@ -108,9 +108,9 @@ module.exports = {
         ),
 
     async execute(interaction) {
-        let pollPath = path.join(
+         let pollPath = path.join(
             __dirname,
-            `../resources/polls/${interaction.guild.id}.json`
+            `../config/polls/${interaction.guild.id}.json`
         );
         switch (interaction.options.getSubcommand()) {
             case "make":
