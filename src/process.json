@@ -1,0 +1,7 @@
+{
+    "watch": ["server", "client"],
+    "ignore_watch" : ["config"],
+    "watch_options": {
+      "followSymlinks": false
+    }
+  }
