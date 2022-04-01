@@ -1,6 +1,6 @@
 module.exports = {
     apps: [{
-      script: "app.js",
+      script: "src/app.js",
       watch: ["server", "client"],
       // Delay between restart
       watch_delay: 1000,
