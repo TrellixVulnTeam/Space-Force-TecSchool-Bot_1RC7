@@ -5,9 +5,9 @@ const path = require("path");
 
 function button(interaction) {
     let pollPath = path.join(
-            __dirname,
-            `../config/polls/${interaction.guild.id}.json`
-        );
+        __dirname,
+        `../config/polls/${interaction.guild.id}.json`
+    );
     let json;
     let fail = `json has failed to be added`;
     let id = JSON.parse(interaction.customId);
@@ -52,8 +52,46 @@ function makeId(length) {
     return id;
 }
 
-function formatData(json) {
-    let txt = `Header: ${json.header}\nBody: ${json.body}`;
+function formatData(json, index) {
+    let idArray;
+    let count = [];
+    let msg = ``;
+
+    if (index > 0) {
+        msg = msg + `\n`;
+    }
+    idArray = Object.keys(json.commands.poll);
+    msg =
+        msg +
+        `Header: ${json.commands.poll[idArray[index]].header}\nBody: ${
+            json.commands.poll[idArray[index]].body
+        }\n`;
+    for (
+        let i = 0;
+        i < json.commands.poll[idArray[index]].options.length;
+        i++
+    ) {
+        count[json.commands.poll[idArray[index]].options[i]] = 0;
+        for (
+            let loop = 0;
+            loop < json.commands.poll[idArray[index]].user.length;
+            loop++
+        ) {
+            if (
+                json.commands.poll[idArray[index]].user[loop].value ==
+                json.commands.poll[idArray[index]].options[i]
+            ) {
+                count[json.commands.poll[idArray[index]].options[i]] =
+                    count[json.commands.poll[idArray[index]].options[i]] + 1;
+            }
+        }
+        msg =
+            msg +
+            `${json.commands.poll[idArray[index]].options[i]}: ${
+                count[json.commands.poll[idArray[index]].options[i]]
+            }\n`;
+    }
+    return msg;
 }
 
 module.exports = {
@@ -103,12 +141,12 @@ module.exports = {
                     option
                         .setName("header")
                         .setDescription("name of the poll")
-                        .setRequired(true)
+                        .setRequired(false)
                 )
         ),
 
     async execute(interaction) {
-         let pollPath = path.join(
+        let pollPath = path.join(
             __dirname,
             `../config/polls/${interaction.guild.id}.json`
         );
@@ -136,6 +174,7 @@ module.exports = {
                 };
                 let fail = `json has failed to be added`;
                 let jsonFile;
+                let idArray;
 
                 if (!fs.existsSync(pollPath)) {
                     fs.writeFileSync(
@@ -155,6 +194,19 @@ module.exports = {
                 }
                 jsonFile = JSON.parse(jsonFile);
                 config = JSON.parse(config);
+                idArray = Object.keys(jsonFile.commands.poll);
+                for (let index = 0; index < idArray.length; index++) {
+                    if (
+                        jsonFile.commands.poll[idArray[index]].header ==
+                        data.header
+                    ) {
+                        await interaction.reply({
+                            content: "There is already a poll with this name",
+                            ephemeral: true,
+                        });
+                        return;
+                    }
+                }
                 for (let index = 0; index < data.options.length; index++) {
                     btn = {
                         id: id,
@@ -194,9 +246,8 @@ module.exports = {
                 break;
             case "results":
                 let results;
-                let txt = "";
-                let idArray;
-
+                let msg = "";
+                let idArrays;
                 if (fs.existsSync(pollPath)) {
                     try {
                         results = fs.readFileSync(pollPath);
@@ -208,26 +259,33 @@ module.exports = {
                         });
                     }
                     results = JSON.parse(results);
-                    idArray = Object.keys(results.commands.poll);
-                    for (let index = 0; index < idArray.length; index++) {
+                    idArrays = Object.keys(results.commands.poll);
+                    for (let index = 0; index < idArrays.length; index++) {
                         if (
-                            toLowerCase(
-                                results.commands.poll[idArray[index]].header
-                            ) ==
-                            toLowerCase(interaction.options.getString("header"))
-                        ) {
-                        } else if (
                             interaction.options.getString("header") == null ||
                             interaction.options.getString("header") ==
                                 undefined ||
                             interaction.options.getString("header") == ""
                         ) {
+                            msg = msg + formatData(results, index, interaction);
+                        } else if (
+                            results.commands.poll[idArrays[index]].header ==
+                            interaction.options.getString("header")
+                        ) {
+                            msg =
+                                msg +
+                                formatData(results, index, interaction) +
+                                "\n";
                         }
                     }
+                    await interaction.reply({
+                        content: msg,
+                        ephemeral: false,
+                    });
                 } else {
                     await interaction.reply({
                         content: "no polls available",
-                        ephemeral: true,
+                        ephemeral: false,
                     });
                 }
                 break;
