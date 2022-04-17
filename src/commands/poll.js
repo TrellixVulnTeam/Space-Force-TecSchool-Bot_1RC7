@@ -2,8 +2,9 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
 const fs = require("fs");
 const path = require("path");
+const general = require(path.join(__dirname, "../modules/general"));
 
-function button(interaction) {
+async function button(interaction) {
     let pollPath = path.join(
         __dirname,
         `../config/polls/${interaction.guild.id}.json`
@@ -40,6 +41,10 @@ function button(interaction) {
     } catch (err) {
         console.log(fail);
     }
+    await interaction.reply({
+        content: "Your vote has been cast or updated",
+        ephemeral: true,
+    });
 }
 
 function makeId(length) {
@@ -58,7 +63,7 @@ function formatData(json, index) {
     let msg = ``;
 
     if (index > 0) {
-        msg = msg + `\n`;
+        msg = msg + `-----------------------\n`;
     }
     idArray = Object.keys(json.commands.poll);
     msg =
@@ -119,7 +124,7 @@ module.exports = {
                     option
                         .setName("body")
                         .setDescription("The body of the poll")
-                        .setRequired(false)
+                        .setRequired(true)
                 )
         )
         .addSubcommand((subcommand) =>
@@ -139,22 +144,20 @@ module.exports = {
                 .setDescription("gives the results of poll(s)")
                 .addStringOption((option) =>
                     option
-                        .setName("header")
+                        .setName("poll")
                         .setDescription("name of the poll")
                         .setRequired(false)
                 )
         ),
 
-    async execute(interaction) {
+    async execute(interaction, client) {
         let pollPath = path.join(
             __dirname,
             `../config/polls/${interaction.guild.id}.json`
         );
         switch (interaction.options.getSubcommand()) {
             case "make":
-                let config = fs.readFileSync(
-                    path.join(__dirname, "../config/config.json")
-                );
+                let config;
                 let buttonRaw = [];
                 let id = makeId(10);
                 let options = interaction.options.getString("options");
@@ -175,74 +178,150 @@ module.exports = {
                 let fail = `json has failed to be added`;
                 let jsonFile;
                 let idArray;
+                let sent;
 
-                if (!fs.existsSync(pollPath)) {
-                    fs.writeFileSync(
-                        pollPath,
-                        JSON.stringify({
-                            commands: {
-                                poll: {},
-                                signUp: {},
-                            },
-                        })
-                    );
-                }
-                try {
-                    jsonFile = fs.readFileSync(pollPath);
-                } catch (err) {
-                    console.log(fail);
-                }
-                jsonFile = JSON.parse(jsonFile);
-                config = JSON.parse(config);
-                idArray = Object.keys(jsonFile.commands.poll);
-                for (let index = 0; index < idArray.length; index++) {
-                    if (
-                        jsonFile.commands.poll[idArray[index]].header ==
-                        data.header
-                    ) {
-                        await interaction.reply({
-                            content: "There is already a poll with this name",
-                            ephemeral: true,
-                        });
-                        return;
+                if (!general.checkForDuplicates(options)) {
+                    if (!fs.existsSync(pollPath)) {
+                        fs.writeFileSync(
+                            pollPath,
+                            JSON.stringify({
+                                commands: {
+                                    poll: {},
+                                },
+                            })
+                        );
                     }
-                }
-                for (let index = 0; index < data.options.length; index++) {
-                    btn = {
-                        id: id,
-                        value: data.options[index],
-                    };
-                    btn = JSON.stringify(btn);
-                    buttonRaw.push(
-                        new MessageButton()
-                            .setCustomId(btn)
-                            .setLabel(data.options[index])
-                            .setStyle("PRIMARY")
+                    try {
+                        config = fs.readFileSync(
+                            path.join(__dirname, "../config/config.json")
+                        );
+                    } catch (err) {
+                        console.log(fail);
+                    }
+                    try {
+                        jsonFile = fs.readFileSync(pollPath);
+                    } catch (err) {
+                        console.log(fail);
+                    }
+                    jsonFile = JSON.parse(jsonFile);
+                    config = JSON.parse(config);
+                    idArray = Object.keys(jsonFile.commands.poll);
+                    for (let index = 0; index < idArray.length; index++) {
+                        if (
+                            jsonFile.commands.poll[idArray[index]].header ==
+                            data.header
+                        ) {
+                            await interaction.reply({
+                                content:
+                                    "There is already a poll with this name",
+                                ephemeral: true,
+                            });
+                            return;
+                        }
+                    }
+                    for (let index = 0; index < data.options.length; index++) {
+                        btn = {
+                            id: id,
+                            value: data.options[index],
+                            command: "poll",
+                        };
+                        btn = JSON.stringify(btn);
+                        buttonRaw.push(
+                            new MessageButton()
+                                .setCustomId(btn)
+                                .setLabel(data.options[index])
+                                .setStyle("PRIMARY")
+                        );
+                    }
+                    jsonFile.commands.poll[id] = json[id];
+                    jsonFile.commands.poll[id].user = [];
+
+                    const embed = new MessageEmbed()
+                        .setColor(config.color)
+                        .setTitle(data.header)
+                        .setDescription(data.body)
+                        .setThumbnail(data.image)
+                        .setTimestamp();
+                    const buttons = new MessageActionRow().addComponents(
+                        buttonRaw
                     );
-                }
-                jsonFile.commands.poll[id] = json[id];
-                jsonFile.commands.poll[id].user = [];
-                jsonFile = JSON.stringify(jsonFile, null, 4);
-                try {
-                    fs.writeFileSync(pollPath, jsonFile);
-                } catch (err) {
-                    console.log(fail);
-                }
 
-                const embed = new MessageEmbed()
-                    .setColor(config.color)
-                    .setTitle(data.header)
-                    .setDescription(data.body)
-                    .setThumbnail(data.image)
-                    .setTimestamp();
-                const buttons = new MessageActionRow().addComponents(buttonRaw);
-
-                await interaction.reply({
-                    embeds: [embed],
-                    components: [buttons],
-                });
+                    await interaction.reply({
+                        ephemeral: false,
+                        embeds: [embed],
+                        components: [buttons],
+                    });
+                    sent = await interaction.fetchReply();
+                    jsonFile.commands.poll[id].channelId = sent.channelId;
+                    jsonFile.commands.poll[id].messageId = sent.id;
+                    jsonFile = JSON.stringify(jsonFile, null, 4);
+                    try {
+                        fs.writeFileSync(pollPath, jsonFile);
+                    } catch (err) {
+                        console.log(fail);
+                    }
+                } else {
+                    await interaction.reply({
+                        content: "Some of the options are the same",
+                        ephemeral: true,
+                    });
+                }
                 break;
             case "remove":
+                let jsonResults;
+                let pollId;
+                let channelId;
+                let messageId;
+
+                if (fs.existsSync(pollPath)) {
+                    try {
+                        jsonResults = fs.readFileSync(pollPath);
+                    } catch (err) {
+                        console.log(err);
+                        await interaction.reply({
+                            content: "there was an error reading the file",
+                            ephemeral: true,
+                        });
+                    }
+                    jsonResults = JSON.parse(jsonResults);
+                    pollId = Object.keys(jsonResults.commands.poll);
+                    for (let index = 0; index < pollId.length; index++) {
+                        if (
+                            jsonResults.commands.poll[pollId[index]].header ==
+                            interaction.options.getString("poll")
+                        ) {
+                            messageId =
+                                jsonResults.commands.poll[pollId[index]]
+                                    .messageId;
+                            channelId =
+                                jsonResults.commands.poll[pollId[index]]
+                                    .channelId;
+                            client.channels.fetch(channelId).then((channel) => {
+                                channel.messages.delete(messageId);
+                            });
+                            delete jsonResults.commands.poll[pollId[index]];
+                            jsonResults = JSON.stringify(jsonResults, null, 4);
+                            try {
+                                fs.writeFileSync(pollPath, jsonResults);
+                            } catch (err) {
+                                console.log(fail);
+                            }
+                            await interaction.reply({
+                                content: `${interaction.options.getString(
+                                    "poll"
+                                )} has been removed`,
+                                ephemeral: true,
+                            });
+                        } else {
+                            await interaction.reply({
+                                content: `${interaction.options.getString(
+                                    "poll"
+                                )} is not a poll`,
+                                ephemeral: true,
+                            });
+                        }
+                    }
+                }
                 break;
             case "results":
                 let results;
@@ -262,20 +341,17 @@ module.exports = {
                     idArrays = Object.keys(results.commands.poll);
                     for (let index = 0; index < idArrays.length; index++) {
                         if (
-                            interaction.options.getString("header") == null ||
-                            interaction.options.getString("header") ==
+                            interaction.options.getString("poll") == null ||
+                            interaction.options.getString("poll") ==
                                 undefined ||
-                            interaction.options.getString("header") == ""
+                            interaction.options.getString("poll") == ""
                         ) {
-                            msg = msg + formatData(results, index, interaction);
+                            msg = msg + formatData(results, index);
                         } else if (
                             results.commands.poll[idArrays[index]].header ==
-                            interaction.options.getString("header")
+                            interaction.options.getString("poll")
                         ) {
-                            msg =
-                                msg +
-                                formatData(results, index, interaction) +
-                                "\n";
+                            msg = msg + formatData(results, index) + "\n";
                         }
                     }
                     await interaction.reply({
