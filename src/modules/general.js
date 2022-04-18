@@ -9,6 +9,7 @@ function checkForDuplicates(array) {
         if (value > 1) {
             return true;
         }
+        value = 0;
     }
     return false;
 }

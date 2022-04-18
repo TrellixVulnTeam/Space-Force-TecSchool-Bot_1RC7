@@ -58,17 +58,6 @@ client.on("interactionCreate", async (interaction) => {
     }
 });
 
-// client.on("messageCreate", async (message) => {
-// 	let msg = message.content
-// 	msg=msg.toLowerCase()
-// 	console.log(msg)
-// 	switch (msg) {
-// 		default:
-// 			filter.swears(msg)
-// 			break;
-// 	}
-// })
-
 client.once("ready", async () => {
     console.log("Ready!");
 });
