@@ -14,4 +14,14 @@ function checkForDuplicates(array) {
     return false;
 }
 
-module.exports = { checkForDuplicates };
+function makeId(length) {
+    let id = "";
+    let R;
+    for (let index = 0; index < length; index++) {
+        R = Math.floor(Math.random() * 9);
+        id = id + R;
+    }
+    return id;
+}
+
+module.exports = { checkForDuplicates, makeId };
