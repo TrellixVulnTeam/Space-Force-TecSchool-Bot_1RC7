@@ -14,7 +14,7 @@ const client = new Client({
 });
 const command = require(path.join(__dirname, "./deploy-commands"));
 const poll = require(path.join(__dirname, "./commands/poll"));
-//const filter = require(path.join(__dirname, "./auto/swear"));
+const filter = require(path.join(__dirname, "./auto/swear"));
 
 command.run();
 client.commands = new Collection();
@@ -33,7 +33,7 @@ client.on("interactionCreate", async (interaction) => {
         const command = client.commands.get(interaction.commandName);
         if (command) {
             try {
-                await command.execute(interaction,client);
+                await command.execute(interaction, client);
             } catch (error) {
                 console.error(error);
                 await interaction.reply({
@@ -56,6 +56,16 @@ client.on("interactionCreate", async (interaction) => {
     } else if (interaction.isSelectMenu) {
         console.log(interaction);
     }
+});
+
+client.on("messageCreate", (message) => {
+    filter.swear(
+        message.content,
+        client,
+        message,
+        message.channelId,
+        message.id
+    );
 });
 
 client.once("ready", async () => {
