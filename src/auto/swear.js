@@ -18,7 +18,6 @@ function swear(message, client, msg, channelId, messageId) {
 
     message.toLowerCase();
     list.toLowerCase();
-    sassy.toLocaleLowerCase();
     sassy = sassy.split("\n");
     message = message.split(" ");
     config = JSON.parse(config);
