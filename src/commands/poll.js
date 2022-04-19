@@ -10,7 +10,7 @@ async function button(interaction) {
         `../config/polls/${interaction.guild.id}.json`
     );
     let json;
-    let fail = `json has failed to be added`;
+    let fail = `vote has failed to be added`;
     let id = JSON.parse(interaction.customId);
     let value = JSON.parse(interaction.customId);
     let test = false;
