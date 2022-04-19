@@ -5,4 +5,3 @@
 -Space force reddit thread integration
 -Weather 
 -Random kind words of encouragement
--role assignments
