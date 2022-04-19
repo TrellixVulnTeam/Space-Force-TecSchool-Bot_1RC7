@@ -16,9 +16,8 @@ function swear(message, client, msg, channelId, messageId) {
     let config = fs.readFileSync(path.join(__dirname, "../config/config.json"));
     let R;
 
-    message.toLowerCase();
-    list.toLowerCase();
-    sassy.toLocaleLowerCase();
+    message = message.toLowerCase();
+    list = list.toLowerCase();
     sassy = sassy.split("\n");
     message = message.split(" ");
     config = JSON.parse(config);
