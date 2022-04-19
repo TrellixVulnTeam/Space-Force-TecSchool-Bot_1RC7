@@ -14,6 +14,7 @@ const client = new Client({
 });
 const command = require(path.join(__dirname, "./deploy-commands"));
 const poll = require(path.join(__dirname, "./commands/poll"));
+const role = require(path.join(__dirname, "./commands/role"));
 const filter = require(path.join(__dirname, "./auto/swear"));
 
 command.run();
@@ -44,28 +45,34 @@ client.on("interactionCreate", async (interaction) => {
         }
     } else if (interaction.isButton()) {
         let command = JSON.parse(interaction.customId);
-
-        command = command.command;
-        switch (command) {
+        switch (command.command) {
             case "poll":
                 poll.button(interaction);
                 break;
             case "role":
+                role.button(interaction, command.value);
                 break;
         }
     } else if (interaction.isSelectMenu) {
-        console.log(interaction);
+        let command = JSON.parse(interaction.values[0]);
+        switch (command.command) {
+            case "role":
+                role.button(interaction, command.value);
+                break;
+        }
     }
 });
 
 client.on("messageCreate", (message) => {
-    filter.swear(
-        message.content,
-        client,
-        message,
-        message.channelId,
-        message.id
-    );
+    if (!message.author.bot) {
+        filter.swear(
+            message.content,
+            client,
+            message,
+            message.channelId,
+            message.id
+        );
+    }
 });
 
 client.once("ready", async () => {
