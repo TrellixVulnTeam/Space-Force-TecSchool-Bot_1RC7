@@ -4,6 +4,7 @@ const {
     MessageButton,
     MessageSelectMenu,
     MessageActionRow,
+    Permissions,
 } = require("discord.js");
 const path = require("path");
 const fs = require("fs");
@@ -58,99 +59,108 @@ module.exports = {
         let test = false;
         let btn;
         let config;
-
-        roles = roles.split(" ");
-        interaction.member.guild.roles.cache.some((role) => {
-            guildRoles.push(role.name);
-        });
-        if (general.checkForDuplicates(roles)) {
-            await interaction.reply({
-                content: "Some of the roles are the same",
-                ephemeral: true,
+        console.log(interaction);
+        if (interaction.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
+            roles = roles.split(" ");
+            interaction.member.guild.roles.cache.some((role) => {
+                guildRoles.push(role.name);
             });
-        } else if (general.checkForDuplicates(guildRoles)) {
-            await interaction.reply({
-                content: "Some of the roles in the server are the same",
-                ephemeral: true,
-            });
-        } else {
-            for (let index = 0; index < roles.length; index++) {
-                for (let i = 0; i < guildRoles.length; i++) {
-                    if (roles[index] == guildRoles[i]) {
-                        test = true;
-                    }
-                }
-                if (!test) {
-                    await interaction.reply({
-                        content:
-                            "There is a role that is not in this server (Caps matter)",
-                        ephemeral: true,
-                    });
-                    return;
-                }
-            }
-            try {
-                config = fs.readFileSync(
-                    path.join(__dirname, "../config/config.json")
-                );
-            } catch (err) {
-                console.log(fail);
-            }
-            config = JSON.parse(config);
-            if (roles.length == 1) {
-                btn = {
-                    value: roles[0],
-                    command: "role",
-                };
-                btn = JSON.stringify(btn);
-
-                const row = new MessageActionRow().addComponents(
-                    new MessageButton()
-                        .setCustomId(btn)
-                        .setLabel(roles[0])
-                        .setStyle("PRIMARY")
-                );
-                const embed = new MessageEmbed()
-                    .setColor(config.color)
-                    .setTitle("Role editor")
-                    .setDescription("Add and remove the role listed below");
-
+            if (general.checkForDuplicates(roles)) {
                 await interaction.reply({
-                    ephemeral: false,
-                    embeds: [embed],
-                    components: [row],
+                    content: "Some of the roles are the same",
+                    ephemeral: true,
+                });
+            } else if (general.checkForDuplicates(guildRoles)) {
+                await interaction.reply({
+                    content: "Some of the roles in the server are the same",
+                    ephemeral: true,
                 });
             } else {
                 for (let index = 0; index < roles.length; index++) {
+                    for (let i = 0; i < guildRoles.length; i++) {
+                        if (roles[index] == guildRoles[i]) {
+                            test = true;
+                        }
+                    }
+                    if (!test) {
+                        await interaction.reply({
+                            content:
+                                "There is a role that is not in this server (Caps matter)",
+                            ephemeral: true,
+                        });
+                        return;
+                    }
+                }
+                try {
+                    config = fs.readFileSync(
+                        path.join(__dirname, "../config/config.json")
+                    );
+                } catch (err) {
+                    console.log(fail);
+                }
+                config = JSON.parse(config);
+                if (roles.length == 1) {
                     btn = {
-                        value: roles[index],
+                        value: roles[0],
                         command: "role",
                     };
                     btn = JSON.stringify(btn);
-                    option.push({
-                        label: roles[index],
-                        description: "Add or remove this role",
-                        value: btn,
+
+                    const row = new MessageActionRow().addComponents(
+                        new MessageButton()
+                            .setCustomId(btn)
+                            .setLabel(roles[0])
+                            .setStyle("PRIMARY")
+                    );
+                    const embed = new MessageEmbed()
+                        .setColor(config.color)
+                        .setTitle("Role editor")
+                        .setDescription("Add and remove the role listed below");
+
+                    await interaction.reply({
+                        ephemeral: false,
+                        embeds: [embed],
+                        components: [row],
+                    });
+                } else {
+                    for (let index = 0; index < roles.length; index++) {
+                        btn = {
+                            value: roles[index],
+                            command: "role",
+                        };
+                        btn = JSON.stringify(btn);
+                        option.push({
+                            label: roles[index],
+                            description: "Add or remove this role",
+                            value: btn,
+                        });
+                    }
+
+                    const row = new MessageActionRow().addComponents(
+                        new MessageSelectMenu()
+                            .setCustomId("select")
+                            .setPlaceholder("No roles selected")
+                            .addOptions(option)
+                    );
+                    const embed = new MessageEmbed()
+                        .setColor(config.color)
+                        .setTitle("Role editor")
+                        .setDescription(
+                            "Add and remove the roles listed below"
+                        );
+
+                    await interaction.reply({
+                        ephemeral: false,
+                        embeds: [embed],
+                        components: [row],
                     });
                 }
-
-                const row = new MessageActionRow().addComponents(
-                    new MessageSelectMenu()
-                        .setCustomId("select")
-                        .setPlaceholder("No roles selected")
-                        .addOptions(option)
-                );
-                const embed = new MessageEmbed()
-                    .setColor(config.color)
-                    .setTitle("Role editor")
-                    .setDescription("Add and remove the roles listed below");
-
-                await interaction.reply({
-                    ephemeral: false,
-                    embeds: [embed],
-                    components: [row],
-                });
             }
+        } else {
+            await interaction.reply({
+                content: "You don not have permission to use this command",
+                ephemeral: true,
+            });
         }
     },
 };
