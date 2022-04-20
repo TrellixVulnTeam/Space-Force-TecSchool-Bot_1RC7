@@ -59,7 +59,7 @@ module.exports = {
         let test = false;
         let btn;
         let config;
-        console.log(interaction);
+        
         if (interaction.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
             roles = roles.split(" ");
             interaction.member.guild.roles.cache.some((role) => {
