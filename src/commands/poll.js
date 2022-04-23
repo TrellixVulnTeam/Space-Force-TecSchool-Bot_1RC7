@@ -20,7 +20,7 @@ async function button(interaction) {
     try {
         json = fs.readFileSync(pollPath);
     } catch (err) {
-        console.log(fail);
+        console.log(err);
     }
     json = JSON.parse(json);
     for (let index = 0; index < json.commands.poll[id].user.length; index++) {
@@ -39,7 +39,7 @@ async function button(interaction) {
     try {
         fs.writeFileSync(pollPath, json);
     } catch (err) {
-        console.log(fail);
+        console.log(err);
     }
     await interaction.reply({
         content: "Your vote has been cast or updated",
@@ -181,12 +181,12 @@ module.exports = {
                             path.join(__dirname, "../config/config.json")
                         );
                     } catch (err) {
-                        console.log(fail);
+                        console.log(err);
                     }
                     try {
                         jsonFile = fs.readFileSync(pollPath);
                     } catch (err) {
-                        console.log(fail);
+                        console.log(err);
                     }
                     jsonFile = JSON.parse(jsonFile);
                     config = JSON.parse(config);
@@ -243,7 +243,7 @@ module.exports = {
                     try {
                         fs.writeFileSync(pollPath, jsonFile);
                     } catch (err) {
-                        console.log(fail);
+                        console.log(err);
                     }
                 } else {
                     await interaction.reply({
@@ -289,7 +289,7 @@ module.exports = {
                             try {
                                 fs.writeFileSync(pollPath, jsonResults);
                             } catch (err) {
-                                console.log(fail);
+                                console.log(err);
                             }
                             await interaction.reply({
                                 content: `${interaction.options.getString(

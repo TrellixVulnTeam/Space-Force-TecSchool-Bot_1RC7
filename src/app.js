@@ -16,6 +16,7 @@ const command = require(path.join(__dirname, "./deploy-commands"));
 const poll = require(path.join(__dirname, "./commands/poll"));
 const role = require(path.join(__dirname, "./commands/role"));
 const filter = require(path.join(__dirname, "./auto/swear"));
+const random = require(path.join(__dirname, "./auto/random"));
 
 client.on("interactionCreate", async (interaction) => {
     if (interaction.isCommand()) {
@@ -65,6 +66,7 @@ client.on("messageCreate", (message) => {
 
 client.once("ready", async () => {
     await command.run(client);
+    random.run();
     client.user.setPresence({
         activities: [{ name: "with my code", type: "PLAYING" }],
         status: "online",

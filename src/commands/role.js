@@ -96,51 +96,22 @@ module.exports = {
                         path.join(__dirname, "../config/config.json")
                     );
                 } catch (err) {
-                    console.log(fail);
+                    console.log(err);
                 }
                 config = JSON.parse(config);
-                if (roles.length == 1) {
+                for (let index = 0; index < roles.length; index++) {
                     btn = {
-                        value: roles[0],
+                        value: roles[index],
                         command: "role",
                     };
                     btn = JSON.stringify(btn);
-
-                    const row = new MessageActionRow().addComponents(
-                        new MessageButton()
-                            .setCustomId(btn)
-                            .setLabel(roles[0])
-                            .setStyle("PRIMARY")
-                    );
-                    const embed = new MessageEmbed()
-                        .setColor(config.color)
-                        .setTitle("Role editor")
-                        .setDescription("Add and remove the role listed below");
-
-                    await interaction.reply({
-                        ephemeral: false,
-                        embeds: [embed],
-                        components: [row],
-                    });
-                } else {
-                    for (let index = 0; index < roles.length; index++) {
-                        btn = {
-                            value: roles[index],
-                            command: "role",
-                        };
-                        btn = JSON.stringify(btn);
-                        option.push({
-                            label: roles[index],
-                            description: "Add or remove this role",
-                            value: btn,
-                        });
+                        option.push( new MessageButton()
+                        .setCustomId(btn)
+                        .setLabel(roles[index])
+                        .setStyle("SUCCESS"));
                     }
-
                     const row = new MessageActionRow().addComponents(
-                        new MessageSelectMenu()
-                            .setCustomId("select")
-                            .setPlaceholder("No roles selected")
-                            .addOptions(option)
+                       option
                     );
                     const embed = new MessageEmbed()
                         .setColor(config.color)
@@ -154,7 +125,7 @@ module.exports = {
                         embeds: [embed],
                         components: [row],
                     });
-                }
+                
             }
         } else {
             await interaction.reply({
