@@ -1,15 +1,14 @@
 require("dotenv").config();
 const fs = require("fs");
 const path = require("path");
+const { Collection } = require("discord.js");
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
 const token = process.env.TOKEN;
 const clientId = process.env.CLIENT_ID;
 
-function run() {
-    let config = fs.readFileSync(path.join(__dirname, "./config/config.json"));
-    config = JSON.parse(config);
-    let guildId = config.guilds;
+async function run(client) {
+    const Guilds = client.guilds.cache.map((guild) => guild.id);
     const commands = [];
     const commandFiles = fs
         .readdirSync(path.join(__dirname, "./commands"))
@@ -21,25 +20,28 @@ function run() {
     }
     const rest = new REST({ version: "9" }).setToken(token);
 
-    (async () => {
-        for (let index = 0; index < guildId.length; index++) {
-            try {
-                console.log(
-                    `Started refreshing application(${guildId[index]}) (/) commands.`
-                );
-                await rest.put(
-                    Routes.applicationGuildCommands(clientId, guildId[index]),
-                    {
-                        body: commands,
-                    }
-                );
-                console.log(
-                    `Successfully reloaded application(${guildId[index]}) (/) commands.`
-                );
-            } catch (error) {
-                console.error(error);
-            }
+    for (let index = 0; index < Guilds.length; index++) {
+        try {
+            console.log(
+                `Started refreshing application(${Guilds[index]}) (/) commands.`
+            );
+            await rest.put(
+                Routes.applicationGuildCommands(clientId, Guilds[index]),
+                {
+                    body: commands,
+                }
+            );
+            console.log(
+                `Successfully reloaded application(${Guilds[index]}) (/) commands.`
+            );
+        } catch (error) {
+            console.error(error);
         }
-    })();
+    }
+    client.commands = new Collection();
+    for (const file of commandFiles) {
+        const command = require(path.join(__dirname, `./commands/${file}`));
+        client.commands.set(command.data.name, command);
+    }
 }
 module.exports = { run };

@@ -2,7 +2,7 @@ require("dotenv").config();
 const token = process.env.TOKEN;
 const fs = require("fs");
 const path = require("path");
-const { Client, Collection, Intents } = require("discord.js");
+const { Client, Intents } = require("discord.js");
 const client = new Client({
     intents: [
         Intents.FLAGS.GUILDS,
@@ -16,18 +16,6 @@ const command = require(path.join(__dirname, "./deploy-commands"));
 const poll = require(path.join(__dirname, "./commands/poll"));
 const role = require(path.join(__dirname, "./commands/role"));
 const filter = require(path.join(__dirname, "./auto/swear"));
-
-command.run();
-client.commands = new Collection();
-
-const commandFiles = fs
-    .readdirSync(path.join(__dirname, "./commands"))
-    .filter((file) => file.endsWith(".js"));
-
-for (const file of commandFiles) {
-    const command = require(path.join(__dirname, `./commands/${file}`));
-    client.commands.set(command.data.name, command);
-}
 
 client.on("interactionCreate", async (interaction) => {
     if (interaction.isCommand()) {
@@ -76,6 +64,11 @@ client.on("messageCreate", (message) => {
 });
 
 client.once("ready", async () => {
+    await command.run(client);
+    client.user.setPresence({
+        activities: [{ name: "with my code", type: "PLAYING" }],
+        status: "online",
+    });
     console.log("Ready!");
 });
 

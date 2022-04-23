@@ -1,3 +1,6 @@
+const path = require("path");
+const fs = require("fs");
+
 function checkForDuplicates(array) {
     let value = 0;
     for (let index = 0; index < array.length; index++) {
@@ -24,4 +27,25 @@ function makeId(length) {
     return id;
 }
 
-module.exports = { checkForDuplicates, makeId };
+function fileExists(path, data, type) {
+    if (!fs.existsSync(path)) {
+        switch (type) {
+            case "json":
+                fs.writeFileSync(
+                    path,
+                    JSON.stringify({
+                        data,
+                    })
+                );
+                break;
+            case "txt":
+                fs.writeFileSync(path, data);
+                break;
+            default:
+                fs.writeFileSync(path);
+                break;
+        }
+    }
+}
+
+module.exports = { checkForDuplicates, makeId, fileExists };

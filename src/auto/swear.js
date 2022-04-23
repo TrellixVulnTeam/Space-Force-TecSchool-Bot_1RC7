@@ -28,6 +28,7 @@ function swear(message, client, msg, channelId, messageId) {
                 msg.channel.send({
                     content: "<@" + msg.author.id + "> " + sassy[R],
                 });
+                return;
             }
         }
     }

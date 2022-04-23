@@ -7,7 +7,7 @@ const general = require(path.join(__dirname, "../modules/general"));
 async function button(interaction) {
     let pollPath = path.join(
         __dirname,
-        `../config/polls/${interaction.guild.id}.json`
+        `../config/guild/${interaction.guild.id}.json`
     );
     let json;
     let fail = `vote has failed to be added`;
@@ -143,7 +143,7 @@ module.exports = {
     async execute(interaction, client) {
         let pollPath = path.join(
             __dirname,
-            `../config/polls/${interaction.guild.id}.json`
+            `../config/guild/${interaction.guild.id}.json`
         );
         switch (interaction.options.getSubcommand()) {
             case "make":
@@ -171,16 +171,11 @@ module.exports = {
                 let sent;
 
                 if (!general.checkForDuplicates(options)) {
-                    if (!fs.existsSync(pollPath)) {
-                        fs.writeFileSync(
-                            pollPath,
-                            JSON.stringify({
-                                commands: {
-                                    poll: {},
-                                },
-                            })
-                        );
-                    }
+                    general.fileExists(pollPath,{
+                        commands: {
+                            poll: {},
+                        },
+                    },"json")
                     try {
                         config = fs.readFileSync(
                             path.join(__dirname, "../config/config.json")
