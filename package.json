@@ -1,6 +1,6 @@
 {
-  "name": "sfbot",
-  "version": "1.0.0",
+  "name": "polaris",
+  "version": "0.1.0",
   "description": "",
   "main": "app.js",
   "scripts": {

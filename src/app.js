@@ -18,6 +18,16 @@ const role = require(path.join(__dirname, "./commands/role"));
 const filter = require(path.join(__dirname, "./auto/swear"));
 const random = require(path.join(__dirname, "./auto/random"));
 
+let package
+try {
+    package = fs.readFileSync(
+        path.join(__dirname, "../package.json")
+    );
+} catch (err) {
+    console.log(err);
+}
+package = JSON.parse(package);
+
 client.on("interactionCreate", async (interaction) => {
     if (interaction.isCommand()) {
         const command = client.commands.get(interaction.commandName);
@@ -76,7 +86,7 @@ client.once("ready", async () => {
         activities: [{ name: "with my code", type: "PLAYING" }],
         status: "online",
     });
-    console.log("Ready!");
+    console.log(`${package.name} version ${package.version} is ready!`);
 });
 
 client.login(token);
