@@ -3,8 +3,12 @@ const fs = require("fs");
 const path = require("path");
 
 function swear(message, client, msg, channelId, messageId) {
+    let list;
+    let sassy;
+    let R;
+
     try {
-        let list = fs.readFileSync(
+        list = fs.readFileSync(
             path.join(__dirname, "../resources/swears.txt"),
             "utf-8"
         );
@@ -12,15 +16,13 @@ function swear(message, client, msg, channelId, messageId) {
         console.log(err);
     }
     try {
-        let sassy = fs.readFileSync(
+        sassy = fs.readFileSync(
             path.join(__dirname, "../resources/sassy.txt"),
             "utf-8"
         );
     } catch (err) {
         console.log(err);
     }
-    let R;
-
     message = message.toLowerCase();
     list = list.toLowerCase();
     sassy = sassy.split("\n");

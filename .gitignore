@@ -1,3 +1,4 @@
 /.env
 /src/config
 /src/commands/news.js
+/src/textCommands

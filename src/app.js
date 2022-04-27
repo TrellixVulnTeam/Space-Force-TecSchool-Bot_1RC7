@@ -54,13 +54,18 @@ client.on("interactionCreate", async (interaction) => {
 
 client.on("messageCreate", (message) => {
     if (!message.author.bot) {
-        filter.swear(
-            message.content,
-            client,
-            message,
-            message.channelId,
-            message.id
-        );
+        if (message.content.split("")[0] == "!") {
+            console.log("hi");
+        }
+        if (false) {
+            filter.swear(
+                message.content,
+                client,
+                message,
+                message.channelId,
+                message.id
+            );
+        }
     }
 });
 
