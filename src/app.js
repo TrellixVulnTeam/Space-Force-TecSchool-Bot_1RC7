@@ -71,7 +71,7 @@ client.on("messageCreate", (message) => {
 
 client.once("ready", async () => {
     await command.run(client);
-    random.run();
+    //random.run();
     client.user.setPresence({
         activities: [{ name: "with my code", type: "PLAYING" }],
         status: "online",
