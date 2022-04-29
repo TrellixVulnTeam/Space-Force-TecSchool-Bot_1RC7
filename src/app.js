@@ -2,6 +2,11 @@ require("dotenv").config();
 const token = process.env.TOKEN;
 const fs = require("fs");
 const path = require("path");
+const express = require("express"); 
+const session = require("express-session");
+const app = express();
+const PORT = process.env.PORT || 3010;
+const passport = require("passport");
 const { Client, Intents } = require("discord.js");
 const client = new Client({
     intents: [
@@ -91,3 +96,42 @@ client.once("ready", async () => {
 });
 
 client.login(token);
+
+//routes
+const homeRoute = require(path.join(__dirname,"./routes/home"));
+const aboutRoute = require(path.join(__dirname,"./routes/about"));
+const loginRoute = require(path.join(__dirname,"./routes/login"));
+const newsRoute = require(path.join(__dirname,"./routes/news"));
+
+//cookies
+app.use(
+	session({
+		resave: true,
+		secret: "Polaris",
+		cookie: {
+			maxAge: 60000 * 60 * 24,
+		},
+		saveUninitialized: true,
+		name: "login",
+	})
+);
+
+//html setup
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+app.use(express.static(path.join(__dirname, "public")));
+
+//passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+//middleware routes
+app.use("/", homeRoute);
+app.use("/about", aboutRoute);
+app.use("/login", loginRoute);
+app.use("/news", newsRoute);
+
+app.listen(PORT, () => {
+    console.log(`${general.time}Now listening to requests on port ${PORT}`);
+    console.log(`${general.time}http://localhost:${PORT}/`);
+});
