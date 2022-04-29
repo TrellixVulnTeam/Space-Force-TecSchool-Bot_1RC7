@@ -1,5 +1,14 @@
-const path = require("path");
 const fs = require("fs");
+
+
+    var date = new Date();
+    var time = `${date.toLocaleDateString()} ${date.toLocaleString("en-US", {
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+        hour12: false,
+    })} --- `;
+
 
 function checkForDuplicates(array) {
     let value = 0;
@@ -48,4 +57,4 @@ function fileExists(path, data, type) {
     }
 }
 
-module.exports = { checkForDuplicates, makeId, fileExists };
+module.exports = { checkForDuplicates, makeId, fileExists, time };

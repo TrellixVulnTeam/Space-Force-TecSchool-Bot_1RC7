@@ -22,7 +22,7 @@ module.exports = {
     async execute(interaction, client) {
         let configPath = path.join(
             __dirname,
-            `../config/quotes/${interaction.guild.id}.txt`
+            `../config/${interaction.guild.id}/quotes.txt`
         );
         if (interaction.options.getSubcommand() === "add") {
             let quote = interaction.options.getString("quote");
@@ -33,24 +33,24 @@ module.exports = {
                     try {
                         fs.appendFileSync(configPath, quote);
                     } catch (err) {
-                        reply(fail);
+                        await interaction.reply(fail);
                     }
-                    reply(success);
+                    await interaction.reply(success);
                 } else {
                     try {
                         fs.appendFileSync(configPath, `\n${quote}`);
                     } catch (err) {
-                        reply(fail);
+                        await interaction.reply(fail);
                     }
-                    reply(success);
+                    await interaction.reply(success);
                 }
             } else {
                 try {
                     fs.writeFileSync(configPath, quote);
                 } catch (err) {
-                    reply(fail);
+                    await interaction.reply(fail);
                 }
-                reply(success);
+                await interaction.reply(success);
             }
         } else if (interaction.options.getSubcommand() === "send") {
             if (
@@ -62,14 +62,10 @@ module.exports = {
                 quotes = text.split("\n");
                 let R = Math.floor(Math.random() * quotes.length);
                 console.log;
-                reply(quotes[R]);
+                await interaction.reply(quotes[R]);
             } else {
-                reply("there are no quotes available");
+                await interaction.reply("there are no quotes available");
             }
-        }
-
-        function reply(message) {
-            interaction.reply(message);
         }
     },
 };

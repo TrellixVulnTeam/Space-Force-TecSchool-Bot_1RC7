@@ -17,14 +17,13 @@ const poll = require(path.join(__dirname, "./commands/poll"));
 const role = require(path.join(__dirname, "./commands/role"));
 const filter = require(path.join(__dirname, "./auto/swear"));
 const random = require(path.join(__dirname, "./auto/random"));
+const general = require(path.join(__dirname, "./modules/general"));
 
-let package
+let package;
 try {
-    package = fs.readFileSync(
-        path.join(__dirname, "../package.json")
-    );
+    package = fs.readFileSync(path.join(__dirname, "../package.json"));
 } catch (err) {
-    console.log(err);
+    console.log(general.time + err);
 }
 package = JSON.parse(package);
 
@@ -65,7 +64,7 @@ client.on("interactionCreate", async (interaction) => {
 client.on("messageCreate", (message) => {
     if (!message.author.bot) {
         if (message.content.split("")[0] == "!") {
-            console.log("hi");
+            console.log(`${general.time}hi`);
         }
         if (false) {
             filter.swear(
@@ -86,7 +85,9 @@ client.once("ready", async () => {
         activities: [{ name: "with my code", type: "PLAYING" }],
         status: "online",
     });
-    console.log(`${package.name} version ${package.version} is ready!`);
+    console.log(
+        `${general.time}${package.name} version ${package.version} is ready!`
+    );
 });
 
 client.login(token);

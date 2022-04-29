@@ -13,7 +13,7 @@ function swear(message, client, msg, channelId, messageId) {
             "utf-8"
         );
     } catch (err) {
-        console.log(err);
+        console.log(general.time + err);
     }
     try {
         sassy = fs.readFileSync(
@@ -21,7 +21,7 @@ function swear(message, client, msg, channelId, messageId) {
             "utf-8"
         );
     } catch (err) {
-        console.log(err);
+        console.log(general.time + err);
     }
     message = message.toLowerCase();
     list = list.toLowerCase();

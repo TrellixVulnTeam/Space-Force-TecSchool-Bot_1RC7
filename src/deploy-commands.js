@@ -6,6 +6,7 @@ const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
 const token = process.env.TOKEN;
 const clientId = process.env.CLIENT_ID;
+const general = require(path.join(__dirname, "./modules/general"));
 
 async function run(client) {
     const Guilds = client.guilds.cache.map((guild) => guild.id);
@@ -23,7 +24,7 @@ async function run(client) {
     for (let index = 0; index < Guilds.length; index++) {
         try {
             console.log(
-                `Started refreshing application(${Guilds[index]}) (/) commands.`
+                `${general.time}Started refreshing application(${Guilds[index]}) (/) commands.`
             );
             await rest.put(
                 Routes.applicationGuildCommands(clientId, Guilds[index]),
@@ -32,7 +33,7 @@ async function run(client) {
                 }
             );
             console.log(
-                `Successfully reloaded application(${Guilds[index]}) (/) commands.`
+                `${general.time}Successfully reloaded application(${Guilds[index]}) (/) commands.`
             );
         } catch (error) {
             console.error(error);
