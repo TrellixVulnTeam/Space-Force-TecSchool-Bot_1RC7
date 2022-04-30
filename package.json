@@ -1,10 +1,12 @@
 {
   "name": "polaris",
   "version": "0.1.0",
+  "testing":true,
   "description": "",
   "main": "app.js",
   "scripts": {
-    "run": "node ./src/app.js"
+    "run": "node ./src/app.js",
+    "dev": "nodemon ./src/app.js"
   },
   "keywords": [],
   "author": "",
@@ -15,10 +17,15 @@
     "discord-api-types": "^0.27.3",
     "discord.js": "^13.6.0",
     "dotenv": "^16.0.0",
+    "ejs": "^3.1.7",
     "envfile": "^6.17.0",
+    "express": "^4.18.0",
+    "express-session": "^1.17.2",
     "node": "^17.5.0",
     "nodemon": "^2.0.15",
     "npm": "^8.5.2",
+    "passport": "^0.5.2",
+    "passport-discord": "^0.1.4",
     "prompt-sync": "^4.2.0"
   }
 }

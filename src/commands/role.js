@@ -8,6 +8,7 @@ const {
 } = require("discord.js");
 const path = require("path");
 const fs = require("fs");
+const error = require(path.join(__dirname, "../modules/error/error"));
 const general = require(path.join(__dirname, "../modules/general"));
 
 async function button(interaction, value) {
@@ -96,7 +97,7 @@ module.exports = {
                         path.join(__dirname, "../config/config.json")
                     );
                 } catch (err) {
-                    console.log(err);
+                    error.error(1, err);
                 }
                 config = JSON.parse(config);
                 for (let index = 0; index < roles.length; index++) {

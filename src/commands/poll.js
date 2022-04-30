@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
 const fs = require("fs");
 const path = require("path");
+const error = require(path.join(__dirname, "../modules/error/error"));
 const general = require(path.join(__dirname, "../modules/general"));
 
 async function button(interaction) {
@@ -20,7 +21,7 @@ async function button(interaction) {
     try {
         json = fs.readFileSync(pollPath);
     } catch (err) {
-        console.log(general.time + err);
+         error.error(1, err);
     }
     json = JSON.parse(json);
     for (let index = 0; index < json.commands.poll[id].user.length; index++) {
@@ -39,7 +40,7 @@ async function button(interaction) {
     try {
         fs.writeFileSync(pollPath, json);
     } catch (err) {
-        console.log(general.time + err);
+         error.error(1, err);
     }
     await interaction.reply({
         content: "Your vote has been cast or updated",
@@ -185,12 +186,12 @@ module.exports = {
                             path.join(__dirname, "../config/config.json")
                         );
                     } catch (err) {
-                        console.log(general.time + err);
+                         error.error(1, err);
                     }
                     try {
                         jsonFile = fs.readFileSync(pollPath);
                     } catch (err) {
-                        console.log(general.time + err);
+                         error.error(1, err);
                     }
                     jsonFile = JSON.parse(jsonFile);
                     config = JSON.parse(config);
@@ -247,7 +248,7 @@ module.exports = {
                     try {
                         fs.writeFileSync(pollPath, jsonFile);
                     } catch (err) {
-                        console.log(general.time + err);
+                         error.error(1, err);
                     }
                 } else {
                     await interaction.reply({
@@ -266,7 +267,7 @@ module.exports = {
                     try {
                         jsonResults = fs.readFileSync(pollPath);
                     } catch (err) {
-                        console.log(general.time + err);
+                         error.error(1, err);
                         await interaction.reply({
                             content: "there was an error reading the file",
                             ephemeral: true,
@@ -293,7 +294,7 @@ module.exports = {
                             try {
                                 fs.writeFileSync(pollPath, jsonResults);
                             } catch (err) {
-                                console.log(general.time + err);
+                                 error.error(1, err);
                             }
                             await interaction.reply({
                                 content: `${interaction.options.getString(
@@ -320,7 +321,7 @@ module.exports = {
                     try {
                         results = fs.readFileSync(pollPath);
                     } catch (err) {
-                        console.log(general.time + err);
+                         error.error(1, err);
                         await interaction.reply({
                             content: "there was an error reading the file",
                             ephemeral: true,
