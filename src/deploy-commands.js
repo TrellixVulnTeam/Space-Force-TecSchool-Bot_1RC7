@@ -5,7 +5,7 @@ const { Collection } = require("discord.js");
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
 const token = process.env.TOKEN;
-const clientId = process.env.CLIENT_ID;
+const clientId = process.env.DISCORD_ID;
 const general = require(path.join(__dirname, "./modules/general"));
 
 async function run(client) {

@@ -1,6 +1,8 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const path = require("path");
 const fs = require("fs");
+const error = require(path.join(__dirname, "../modules/error/error"));
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("quote")
@@ -33,6 +35,7 @@ module.exports = {
                     try {
                         fs.appendFileSync(configPath, quote);
                     } catch (err) {
+                        error.error(1, err);
                         await interaction.reply(fail);
                     }
                     await interaction.reply(success);
@@ -40,6 +43,7 @@ module.exports = {
                     try {
                         fs.appendFileSync(configPath, `\n${quote}`);
                     } catch (err) {
+                        error.error(1, err);
                         await interaction.reply(fail);
                     }
                     await interaction.reply(success);
@@ -48,6 +52,7 @@ module.exports = {
                 try {
                     fs.writeFileSync(configPath, quote);
                 } catch (err) {
+                    error.error(1, err);
                     await interaction.reply(fail);
                 }
                 await interaction.reply(success);

@@ -1,6 +1,7 @@
 require("dotenv").config();
 const fs = require("fs");
 const path = require("path");
+const error = require(path.join(__dirname, "../modules/error/error"));
 
 function swear(message, client, msg, channelId, messageId) {
     let list;
@@ -13,7 +14,7 @@ function swear(message, client, msg, channelId, messageId) {
             "utf-8"
         );
     } catch (err) {
-        console.log(general.time + err);
+        error.error(1, err);
     }
     try {
         sassy = fs.readFileSync(
@@ -21,7 +22,7 @@ function swear(message, client, msg, channelId, messageId) {
             "utf-8"
         );
     } catch (err) {
-        console.log(general.time + err);
+        error.error(1, err);
     }
     message = message.toLowerCase();
     list = list.toLowerCase();

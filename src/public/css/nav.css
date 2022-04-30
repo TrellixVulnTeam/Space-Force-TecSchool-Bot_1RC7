@@ -12,18 +12,18 @@ ul.topnav li {
 
 ul.topnav li a {
     display: block;
-    color: white;
+    color: #ffffff;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
 }
 
 ul.topnav li a:hover:not(.active) {
-    background-color: #111;
+    background-color: #2f3033;
 }
 
 ul.topnav li a.active {
-    background-color: #04aa6d;
+    background-color: #1433b3;
 }
 
 ul.topnav li.right {

@@ -1,2 +1,31 @@
 <%- include('partials/header') -%>
+<body>
+    <link rel="stylesheet" href="/stylesheets/login.css" />
+    <div class="login">
+        <% if(fail){ %>
+        <div id="msg" class="msg">
+            <p class="">There was an error logging you in please try again</p>
+            <br />
+            <button class="" onclick="hide()">Ok</button>
+        </div>
+        <% } %>
+        <h1>Login Polaris</h1>
+        <br />
+        <a
+            href="https://discord.com/api/oauth2/authorize?client_id=949844253557792779&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin%2Fdiscord%2Fcallback&response_type=code&scope=identify%20email%20guilds%20guilds.join%20guilds.members.read"
+        >
+            <div class="loginBtn">
+                Login with Discord
+                <img
+                    style="height: 25px; margin-left: 10px"
+                    src="./resources/discordIcon.png"
+                /></div
+        ></a>
+        <a
+            style="position: absolute; margin-top: 40px; margin-left: -14px"
+            href="/"
+            >back</a
+        >
+    </div>
+</body>
 <%- include('partials/footer') -%>

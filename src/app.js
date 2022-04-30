@@ -2,7 +2,7 @@ require("dotenv").config();
 const token = process.env.TOKEN;
 const fs = require("fs");
 const path = require("path");
-const express = require("express"); 
+const express = require("express");
 const session = require("express-session");
 const app = express();
 const PORT = process.env.PORT || 3010;
@@ -23,12 +23,13 @@ const role = require(path.join(__dirname, "./commands/role"));
 const filter = require(path.join(__dirname, "./auto/swear"));
 const random = require(path.join(__dirname, "./auto/random"));
 const general = require(path.join(__dirname, "./modules/general"));
+const error = require(path.join(__dirname, "./modules/error/error"));
 
 let package;
 try {
     package = fs.readFileSync(path.join(__dirname, "../package.json"));
 } catch (err) {
-    console.log(general.time + err);
+    error.error(1, err);
 }
 package = JSON.parse(package);
 
@@ -38,8 +39,8 @@ client.on("interactionCreate", async (interaction) => {
         if (command) {
             try {
                 await command.execute(interaction, client);
-            } catch (error) {
-                console.error(error);
+            } catch (err) {
+                error.error(1, err);
                 await interaction.reply({
                     content: "There was an error while executing this command!",
                     ephemeral: true,
@@ -98,22 +99,22 @@ client.once("ready", async () => {
 client.login(token);
 
 //routes
-const homeRoute = require(path.join(__dirname,"./routes/home"));
-const aboutRoute = require(path.join(__dirname,"./routes/about"));
-const loginRoute = require(path.join(__dirname,"./routes/login"));
-const newsRoute = require(path.join(__dirname,"./routes/news"));
+const homeRoute = require(path.join(__dirname, "./routes/home"));
+const aboutRoute = require(path.join(__dirname, "./routes/about"));
+const loginRoute = require(path.join(__dirname, "./routes/login"));
+const newsRoute = require(path.join(__dirname, "./routes/news"));
 
 //cookies
 app.use(
-	session({
-		resave: true,
-		secret: "Polaris",
-		cookie: {
-			maxAge: 60000 * 60 * 24,
-		},
-		saveUninitialized: true,
-		name: "login",
-	})
+    session({
+        resave: true,
+        secret: "Polaris",
+        cookie: {
+            maxAge: 60000 * 60 * 24,
+        },
+        saveUninitialized: true,
+        name: "login",
+    })
 );
 
 //html setup
@@ -132,6 +133,8 @@ app.use("/login", loginRoute);
 app.use("/news", newsRoute);
 
 app.listen(PORT, () => {
-    console.log(`${general.time}Now listening to requests on port ${PORT}`);
-    console.log(`${general.time}http://localhost:${PORT}/`);
+    if (!package.testing) {
+        console.log(`${general.time}Now listening to requests on port ${PORT}`);
+        console.log(`${general.time}http://localhost:${PORT}/`);
+    }
 });
