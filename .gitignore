@@ -2,3 +2,5 @@
 /src/config
 /src/commands/news.js
 /src/textCommands
+/src/resources/guilds
+/src/modules/error/error.json

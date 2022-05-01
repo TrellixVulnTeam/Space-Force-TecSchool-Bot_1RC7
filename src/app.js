@@ -84,6 +84,10 @@ client.on("messageCreate", (message) => {
     }
 });
 
+client.on("guildCreate",async (guild) => {
+    await command.run(client);
+});
+
 client.once("ready", async () => {
     await command.run(client);
     //random.run();
@@ -131,10 +135,9 @@ app.use("/", homeRoute);
 app.use("/about", aboutRoute);
 app.use("/login", loginRoute);
 app.use("/news", newsRoute);
-
-app.listen(PORT, () => {
-    if (!package.testing) {
+if (!package.testing) {
+    app.listen(PORT, () => {
         console.log(`${general.time}Now listening to requests on port ${PORT}`);
         console.log(`${general.time}http://localhost:${PORT}/`);
-    }
-});
+    });
+}

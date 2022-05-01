@@ -24,33 +24,25 @@ module.exports = {
     async execute(interaction, client) {
         let configPath = path.join(
             __dirname,
-            `../config/${interaction.guild.id}/quotes.txt`
+            `../resources/guilds/${interaction.guild.id}/quotes.txt`
         );
+
         if (interaction.options.getSubcommand() === "add") {
             let quote = interaction.options.getString("quote");
             let success = `${quote} has been added`;
             let fail = `${quote} has failed to be added`;
-            if (fs.existsSync(configPath)) {
-                if (fs.readFileSync(configPath, "utf-8") == "") {
-                    try {
-                        fs.appendFileSync(configPath, quote);
-                    } catch (err) {
-                        error.error(1, err);
-                        await interaction.reply(fail);
-                    }
-                    await interaction.reply(success);
-                } else {
-                    try {
-                        fs.appendFileSync(configPath, `\n${quote}`);
-                    } catch (err) {
-                        error.error(1, err);
-                        await interaction.reply(fail);
-                    }
-                    await interaction.reply(success);
+
+            if (fs.readFileSync(configPath, "utf-8") == "") {
+                try {
+                    fs.appendFileSync(configPath, quote);
+                } catch (err) {
+                    error.error(1, err);
+                    await interaction.reply(fail);
                 }
+                await interaction.reply(success);
             } else {
                 try {
-                    fs.writeFileSync(configPath, quote);
+                    fs.appendFileSync(configPath, `\n${quote}`);
                 } catch (err) {
                     error.error(1, err);
                     await interaction.reply(fail);
@@ -58,14 +50,13 @@ module.exports = {
                 await interaction.reply(success);
             }
         } else if (interaction.options.getSubcommand() === "send") {
-            if (
-                fs.existsSync(configPath) &&
-                fs.readFileSync(configPath, "utf-8") != ""
-            ) {
+            if (fs.readFileSync(configPath, "utf-8") != "") {
                 let quotes = [];
                 let text = fs.readFileSync(configPath, "utf-8");
+                let R;
+
                 quotes = text.split("\n");
-                let R = Math.floor(Math.random() * quotes.length);
+                R = Math.floor(Math.random() * quotes.length);
                 console.log;
                 await interaction.reply(quotes[R]);
             } else {

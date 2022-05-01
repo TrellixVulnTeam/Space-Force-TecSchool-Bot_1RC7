@@ -1,4 +1,6 @@
 const fs = require("fs");
+const path = require("path");
+const error = require(path.join(__dirname, "../modules/error/error"));
 
 var date = new Date();
 var time = `${date.toLocaleDateString()} ${date.toLocaleString("en-US", {
@@ -36,22 +38,41 @@ module.exports = {
         return id;
     },
 
-    fileExists: function (path, data, type) {
-        if (!fs.existsSync(path)) {
+    fileExists: function (filePath, data, type) {
+        if (!fs.existsSync(filePath)) {
             switch (type) {
                 case "json":
-                    fs.writeFileSync(
-                        path,
-                        JSON.stringify({
-                            data,
-                        })
-                    );
+                    try {
+                        fs.writeFileSync(
+                            filePath,
+                            JSON.stringify({
+                                data,
+                            })
+                        );
+                    } catch (err) {
+                        error.error(1, err);
+                    }
                     break;
                 case "txt":
-                    fs.writeFileSync(path, data);
+                    try {
+                        fs.writeFileSync(filePath, data);
+                    } catch (err) {
+                        error.error(1, err);
+                    }
+                    break;
+                case "folder":
+                    try {
+                        fs.mkdirSync(filePath);
+                    } catch (err) {
+                        error.error(1, err);
+                    }
                     break;
                 default:
-                    fs.writeFileSync(path);
+                    try {
+                        fs.writeFileSync(filePath);
+                    } catch (err) {
+                        error.error(1, err);
+                    }
                     break;
             }
         }
