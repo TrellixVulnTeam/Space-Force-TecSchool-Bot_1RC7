@@ -16,7 +16,7 @@ module.exports = {
             "\x1b[33m%s\x1b[0m",
             "\x1b[31m%s\x1b[0m",
         ];
-        let colorBold = [
+        let backgroundColor = [
             "\x1b[42m%s\x1b[0m",
             "\x1b[43m%s\x1b[0m",
             "\x1b[41m%s\x1b[0m",
@@ -24,7 +24,7 @@ module.exports = {
 
         //log error in the console
         console.log(
-            colorBold[errorLevel - 1],
+            backgroundColor[errorLevel - 1],
             `${time}error level: ${errorLevel} `
         );
         console.log(color[errorLevel - 1], log);
