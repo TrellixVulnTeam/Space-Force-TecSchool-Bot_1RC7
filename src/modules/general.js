@@ -3,7 +3,7 @@ const path = require("path");
 const error = require(path.join(__dirname, "../modules/error/error"));
 
 var date = new Date();
-var time = `${date.toLocaleDateString()} ${date.toLocaleString("en-US", {
+var time = `> ${date.toLocaleDateString()} ${date.toLocaleString("en-US", {
     hour: "numeric",
     minute: "numeric",
     second: "numeric",
