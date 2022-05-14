@@ -7,6 +7,7 @@ const session = require("express-session");
 const app = express();
 const PORT = process.env.PORT || 3010;
 const passport = require("passport");
+const discordStrategy = require("./strategies/discord");
 const { Client, Intents } = require("discord.js");
 const client = new Client({
     intents: [
@@ -18,6 +19,7 @@ const client = new Client({
     ],
 });
 const command = require(path.join(__dirname, "./deploy-commands"));
+const setup = require(path.join(__dirname, "./setup"));
 const poll = require(path.join(__dirname, "./commands/poll"));
 const role = require(path.join(__dirname, "./commands/role"));
 const filter = require(path.join(__dirname, "./auto/swear"));
@@ -26,6 +28,10 @@ const general = require(path.join(__dirname, "./modules/general"));
 const error = require(path.join(__dirname, "./modules/error/error"));
 
 let package;
+
+if (!package.testing) {
+    setup.run();
+}
 try {
     package = fs.readFileSync(path.join(__dirname, "../package.json"));
 } catch (err) {
@@ -84,7 +90,7 @@ client.on("messageCreate", (message) => {
     }
 });
 
-client.on("guildCreate",async (guild) => {
+client.on("guildCreate", async (guild) => {
     await command.run(client);
 });
 

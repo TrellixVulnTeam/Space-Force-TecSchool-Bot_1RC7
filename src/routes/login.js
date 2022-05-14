@@ -1,20 +1,35 @@
 const router = require("express").Router();
-
 const passport = require("passport");
+
+router.get("/auth", passport.authenticate("discord"));
+router.get(
+    "/auth/redirect",
+    passport.authenticate("discord", {
+        failureRedirect: "/",
+        successRedirect: "/callback",
+    })
+);
 
 router.get("/", (req, res) => {
     res.render("login", {
         fail: false,
     });
 });
+router.get("/callback", isAuthorized, (req, res) => {
+    console.log(req.user);
+    res.redirect("/");
+});
 
-router.get("/failure", (req, res) => {
-    res.render("login", {
-        fail: true,
-    });
+router.get("/settings/:guildId", isAuthorized, (req, res) => {
+    res.sendStatus(200);
 });
-router.get("/discord/callback", (req, res) => {
-    res.render("login", {
-    });
-});
+
+function isAuthorized(req, res, next) {
+    if (req.user) {
+        next();
+    } else {
+        res.redirect("/login");
+    }
+}
+
 module.exports = router;
