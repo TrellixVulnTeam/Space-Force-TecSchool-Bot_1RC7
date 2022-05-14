@@ -1,4 +1,4 @@
-# Space-Force-TecSchool-Bot
+# Polaris
 
 # TODO
 -General Raymond's tweets
