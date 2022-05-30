@@ -29,9 +29,6 @@ const error = require(path.join(__dirname, "./modules/error/error"));
 
 let package;
 
-if (!package.testing) {
-    setup.run();
-}
 try {
     package = fs.readFileSync(path.join(__dirname, "../package.json"));
 } catch (err) {
@@ -95,6 +92,7 @@ client.on("guildCreate", async (guild) => {
 });
 
 client.once("ready", async () => {
+    await setup.run(client);
     await command.run(client);
     //random.run();
     client.user.setPresence({

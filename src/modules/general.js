@@ -39,7 +39,9 @@ module.exports = {
     },
 
     fileExists: function (filePath, data, type) {
-        if (!fs.existsSync(filePath)) {
+        if (fs.existsSync(filePath)) {
+            return true;
+        } else {
             switch (type) {
                 case "json":
                     try {
@@ -75,6 +77,7 @@ module.exports = {
                     }
                     break;
             }
+            return false;
         }
     },
 };

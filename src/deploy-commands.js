@@ -29,11 +29,6 @@ async function run(client) {
         commands.push(command.data.toJSON());
     }
     const rest = new REST({ version: "9" }).setToken(token);
-    general.fileExists(
-        path.join(__dirname, "./resources/guilds"),
-        null,
-        "folder"
-    );
 
     for (let index = 0; index < Guilds.length; index++) {
         try {
@@ -52,25 +47,6 @@ async function run(client) {
         } catch (err) {
             error.error(err);
         }
-        general.fileExists(
-            path.join(__dirname, `./resources/guilds/${Guilds[index]}`),
-            null,
-            "folder"
-        );
-
-        general.fileExists(
-            path.join(
-                __dirname,
-                `./resources/guilds/${Guilds[index]}/config.json`
-            ),
-            config,
-            "txt"
-        );
-        makeTxtFile([
-            `./resources/guilds/${Guilds[index]}/sassy.txt`,
-            `./resources/guilds/${Guilds[index]}/swears.txt`,
-            `./resources/guilds/${Guilds[index]}/quotes.txt`,
-        ]);
     }
     client.commands = new Collection();
     for (const file of commandFiles) {
@@ -79,9 +55,4 @@ async function run(client) {
     }
 }
 
-function makeTxtFile(paths) {
-    for (let index = 0; index < paths.length; index++) {
-        general.fileExists(path.join(__dirname, paths[index]), "", "txt");
-    }
-}
 module.exports = { run };

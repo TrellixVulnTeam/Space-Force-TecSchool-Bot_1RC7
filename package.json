@@ -1,7 +1,7 @@
 {
     "name": "polaris",
     "version": "0.1.0",
-    "testing": false,
+    "testing": true,
     "description": "",
     "main": "app.js",
     "scripts": {
