@@ -139,9 +139,8 @@ app.use("/", homeRoute);
 app.use("/about", aboutRoute);
 app.use("/login", loginRoute);
 app.use("/news", newsRoute);
-if (!package.testing) {
-    app.listen(PORT, () => {
-        console.log(`${general.time}Now listening to requests on port ${PORT}`);
-        console.log(`${general.time}http://localhost:${PORT}/`);
-    });
-}
+
+app.listen(PORT, () => {
+    console.log(`${general.time}Now listening to requests on port ${PORT}`);
+    console.log(`${general.time}http://localhost:${PORT}/`);
+});
