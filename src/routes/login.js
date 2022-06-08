@@ -1,22 +1,36 @@
 const router = require("express").Router();
 const passport = require("passport");
-
-router.get("/auth", passport.authenticate("discord"));
-router.get(
-    "/auth/redirect",
-    passport.authenticate("discord", {
-        failureRedirect: "/",
-        successRedirect: "/callback",
-    })
-);
+require("dotenv").config();
 
 router.get("/", (req, res) => {
-    const url = req.query.url;
+    let url = req.query.url;
+    let fail = req.query.fail;
+    if (url == undefined) {
+        url = "/";
+    }
+    if (fail == "true") {
+        fail = true;
+    } else if (fail == undefined || fail == "false") {
+        fail = false;
+    }
     res.render("login", {
-        fail: false,
+        fail: fail,
         url: url,
     });
 });
+
+router.get("/auth", passport.authenticate("discord"));
+
+router.get(
+    "/auth/redirect",
+    passport.authenticate("discord", {
+        failureRedirect: "/login?fail=true",
+    }),
+    (req, res) => {
+        res.redirect("/");
+    }
+);
+
 router.get("/callback", isAuthorized, (req, res) => {
     console.log(req.user);
     res.redirect("/");
@@ -30,7 +44,7 @@ function isAuthorized(req, res, next) {
     if (req.user) {
         next();
     } else {
-        res.redirect("/login");
+        res.redirect("/login?fail=true");
     }
 }
 

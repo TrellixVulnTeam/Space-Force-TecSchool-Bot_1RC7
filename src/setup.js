@@ -67,6 +67,7 @@ async function envCheck() {
         "BOT_OWNER_ID",
         "PORT",
         "DISCORD_REDIRECT",
+        "DISCORD_OAUTH2",
     ];
     let val = "";
     let conformation = "";

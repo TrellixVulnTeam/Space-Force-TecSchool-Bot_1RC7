@@ -8,11 +8,24 @@ body {
     background-color: #202124;
 }
 
-h1{
+h1 {
     margin-top: 0px;
 }
 
-a, a:hover, a:focus, a:active {
+button {
+    background-color: #c1c1c1;
+    color :#000000;
+    padding: 10px;
+    border-radius: 10px;
+    width: fit-content;
+    font: inherit;
+    margin: 0px;
+}
+
+a,
+a:hover,
+a:focus,
+a:active {
     text-decoration: none;
     color: inherit;
 }
