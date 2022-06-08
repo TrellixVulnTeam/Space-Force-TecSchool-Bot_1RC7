@@ -1,0 +1,25 @@
+.box {
+    background-color: #f0ffff;
+    height: fit-content;
+    width: fit-content;
+    color: #000000;
+    padding: 32px;
+    border-radius: 10px;
+    position: absolute;
+    text-align: center;
+    margin: 0px;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.link{
+        background-color: #c1c1c1;  
+        padding :10px;
+        border-radius: 10px; 
+        width: fit-content;
+        margin: 0px;
+        display: inline-block;
+}
+

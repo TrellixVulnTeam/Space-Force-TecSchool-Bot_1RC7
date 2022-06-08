@@ -4,5 +4,12 @@
     <li><a id="home" href="/">Home</a></li>
     <li><a id="news" href="/news">News</a></li>
     <li><a id="about" href="/about">About</a></li>
-    <li class="right"><a id="login" href="/login">Login</a></li>
+    <li class="right"><a id="login" onclick="login()">Login</a></li>
 </ul>
+
+<script>
+    function login() {
+        let currentPage = window.location.href;
+        window.location.href = `/login?url=${currentPage}`;
+    }
+</script>

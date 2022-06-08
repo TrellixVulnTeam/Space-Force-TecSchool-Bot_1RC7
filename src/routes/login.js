@@ -11,8 +11,10 @@ router.get(
 );
 
 router.get("/", (req, res) => {
+    const url = req.query.url;
     res.render("login", {
         fail: false,
+        url: url,
     });
 });
 router.get("/callback", isAuthorized, (req, res) => {

@@ -1,31 +1,38 @@
 <%- include('partials/header') -%>
-<body>
-    <link rel="stylesheet" href="/stylesheets/login.css" />
-    <div class="login">
-        <% if(fail){ %>
-        <div id="msg" class="msg">
-            <p class="">There was an error logging you in please try again</p>
-            <br />
-            <button class="" onclick="hide()">Ok</button>
-        </div>
-        <% } %>
-        <h1>Login Polaris</h1>
-        <br />
-        <a
-            href="https://discord.com/api/oauth2/authorize?client_id=949844253557792779&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin%2Fauth%2Fredirect&response_type=code&scope=identify%20email%20guilds%20guilds.join%20connections"
-        >
-            <div class="loginBtn">
-                Login with Discord
-                <img
-                    style="height: 25px; margin-left: 10px"
-                    src="./resources/discordIcon.png"
-                /></div
-        ></a>
-        <a
-            style="position: absolute; margin-top: 40px; margin-left: -14px"
-            href="/"
-            >back</a
-        >
-    </div>
-</body>
+<link rel="stylesheet" href="css/login.css" />
+
+<% if(fail){ %>
+<div id="msg">
+    <p>There was an error logging you in please try again</p>
+    <br />
+    <button onclick="hide()">Ok</button>
+</div>
+<% } %>
+<div class="box">
+    <h1>Login To Polaris</h1>
+    <a
+        href="https://discord.com/api/oauth2/authorize?client_id=949844253557792779&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin%2Fauth%2Fredirect&response_type=code&scope=identify%20email%20guilds%20guilds.join%20connections"
+    >
+        <div class ="link">
+            <span style="vertical-align: middle">Login with Discord</span>
+            <img
+                style="height: 25px;vertical-align: middle"
+                src="./resources/discordIcon.png"
+            /></div></a
+    ><br /><br>
+    <a onclick="back()">back</a>
+</div>
+
+<div id="url" data-url="<%= url %>"></div>
+<script>
+    function back() {
+        let url = document.getElementById("url").dataset.url;
+        if (url == undefined || url == "") {
+            window.location.href = "/";
+        } else {
+            window.location.href = url;
+        }
+    }
+</script>
+
 <%- include('partials/footer') -%>

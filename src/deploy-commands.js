@@ -9,14 +9,6 @@ const clientId = process.env.DISCORD_ID;
 const general = require(path.join(__dirname, "./modules/general"));
 const error = require(path.join(__dirname, "./modules/error/error"));
 
-let config;
-
-try {
-    config = fs.readFileSync(path.join(__dirname, "resources/config.json"));
-} catch (err) {
-    error.error(err);
-}
-
 async function run(client) {
     const Guilds = client.guilds.cache.map((guild) => guild.id);
     const commands = [];
