@@ -18,6 +18,7 @@ const client = new Client({
         Intents.FLAGS.DIRECT_MESSAGES,
     ],
 });
+const db = require(path.join(__dirname, "./database"));
 const command = require(path.join(__dirname, "./deploy-commands"));
 const setup = require(path.join(__dirname, "./setup"));
 const poll = require(path.join(__dirname, "./commands/poll"));
@@ -29,6 +30,11 @@ const error = require(path.join(__dirname, "./modules/error/error"));
 
 let package;
 
+try {
+    db.then(()=>console.log(`${general.time}Connected to MongoDB Database`))
+} catch (err) {
+    error.error(2, err);
+}
 try {
     package = fs.readFileSync(path.join(__dirname, "../package.json"));
 } catch (err) {

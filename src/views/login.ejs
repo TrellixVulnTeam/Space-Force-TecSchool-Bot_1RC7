@@ -11,9 +11,7 @@
 <% } %>
 <div class="box">
     <h1>Login To Polaris</h1>
-    <a
-        href="/login/auth/"
-    >
+    <a href="/login/auth/">
         <div class="link">
             <span style="vertical-align: middle">Login with Discord</span>
             <img
@@ -23,8 +21,18 @@
     ><br /><br />
     <a onclick="back()">back</a>
 </div>
-
 <div id="url" data-url="<%= url %>"></div>
+<%- include('partials/particles') -%>
+<script>
+    particles({
+        colors: ["#8fd5a6", "#ad6a6c", "#9eadc8", "#0e79b2", "#edae49"],
+        minSize: 2,
+        maxSize: 8,
+        amount: 2000,
+        density: 1500,
+        velocity: [0.5, 1],
+    });
+</script>
 <script>
     function back() {
         let url = document.getElementById("url").dataset.url;
