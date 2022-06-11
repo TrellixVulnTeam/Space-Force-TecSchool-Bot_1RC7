@@ -1,0 +1,57 @@
+<%- include('partials/header') -%> <%- include('partials/nav') -%>
+<link rel="stylesheet" href="css/contact.css" />
+
+<div class="mainBody">
+    <H1>Contact Information</H1>
+    <div class="discordWidget">
+        <div class="discordHeader">
+            <h1 class="discordHeader">Discord</h1>
+            <p class="discordHeader">
+                Online: <%= discordWidget.presence_count %>
+            </p>
+        </div>
+        <div class="discordMembers">
+            <% if (discordWidget.members.length ==0) { %>
+            <br />
+            <% } %> <% for( let index = 0; index < discordWidget.members.length;
+            index++ ) { %>
+            <div class="discordMember">
+                <img
+                    class="discordMember"
+                    src="<%=  discordWidget.members[index].avatar_url %> "
+                />
+                <span class="discordMember"
+                    ><%= discordWidget.members[index].username %></span
+                >
+            </div>
+            <% } %>
+        </div>
+        <div class="discordJoin">
+            <a href="<%=  discordWidget.instant_invite %> " target="_blank"
+                >Join Server</a
+            >
+        </div>
+    </div>
+    <div class="gitWidget">
+        <div class="gitHeader">
+            <h1 class="gitHeader">GitHub</h1>
+            <p class="gitHeader"><%= gitWidget.full_name %></p>
+        </div>
+        <div class="gitInfo">
+            <p><%= gitWidget.forks_count %> Forks</p>
+            <p><%= gitWidget.open_issues_count %> Issues</p>
+            <p><%= gitWidget.stargazers_count %> Star</p>
+            <p><%= gitWidget.watchers_count %> Watching</p>
+            <p><%= gitWidget.contributors.length %> Contributors</p>
+        </div>
+        <div class="gitJoin">
+            <a href=" <%= gitWidget.html_url %> " target="_blank"
+                >View GitHub</a
+            >
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById("contact").classList.add("active");
+</script>
+<%- include('partials/footer') -%>

@@ -114,7 +114,7 @@ client.login(token);
 
 //routes
 const homeRoute = require(path.join(__dirname, "./routes/home"));
-const aboutRoute = require(path.join(__dirname, "./routes/about"));
+const contactRoute = require(path.join(__dirname, "./routes/contact"));
 const loginRoute = require(path.join(__dirname, "./routes/login"));
 const newsRoute = require(path.join(__dirname, "./routes/news"));
 
@@ -142,7 +142,7 @@ app.use(passport.session());
 
 //middleware routes
 app.use("/", homeRoute);
-app.use("/about", aboutRoute);
+app.use("/contact", contactRoute);
 app.use("/login", loginRoute);
 app.use("/news", newsRoute);
 

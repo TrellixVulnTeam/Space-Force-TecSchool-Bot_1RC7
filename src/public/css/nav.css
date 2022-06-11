@@ -20,7 +20,7 @@ ul.topnav li a {
     margin-bottom: 10px;
     margin-left: 15px;
     text-decoration: none;
-    border-radius: 25px;
+    border-radius: 30px;
 }
 
 ul.topnav li a:hover:not(.active) {

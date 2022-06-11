@@ -1,0 +1,97 @@
+.discordWidget {
+    border-radius: 15px;
+    width: fit-content;
+    background-color: #333333;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+div.discordHeader {
+    border-radius: 15px 15px 0px 0px;
+    padding: 10px;
+    position: relative;
+    background-color: #5865f2;
+    height: 37.52px;
+    max-width: fit-content;
+    min-width: 500px;
+}
+h1.discordHeader {
+    width: fit-content;
+    float: left;
+    margin: 0px;
+}
+p.discordHeader {
+    font-size: 17px;
+    margin: 10px;
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+}
+.discordMembers {
+    padding: 0px;
+    margin-left: 10px;
+}
+div.discordMember {
+    padding: 10px;
+    margin: 10px;
+    margin-left: 0px;
+    border-radius: 10px;
+    width: fit-content;
+    display: inline-block;
+}
+div.discordMember:hover {
+    background-color: #26272b;
+}
+img.discordMember {
+    height: 40px;
+    border-radius: 100%;
+    vertical-align: middle;
+}
+span.discordMember {
+    vertical-align: middle;
+}
+.discordJoin {
+    background-color: #5865f2;
+    padding: 10px;
+    margin-left: 10px;
+    border-radius: 15px;
+    width: fit-content;
+}
+.gitWidget {
+    border-radius: 15px;
+    width: fit-content;
+    background-color: #333333;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+div.gitHeader {
+    border-radius: 15px 15px 0px 0px;
+    padding: 10px;
+    position: relative;
+    background-color: #f78166;
+    height: 37.52px;
+    max-width: fit-content;
+    min-width: 500px;
+}
+h1.gitHeader {
+    width: fit-content;
+    float: left;
+    margin: 0px;
+}
+p.gitHeader {
+    font-size: 17px;
+    margin: 10px;
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+}
+.gitInfo {
+    padding: 0px;
+    margin-left: 10px;
+}
+.gitJoin {
+    background-color: #f78166;
+    padding: 10px;
+    margin-left: 10px;
+    border-radius: 15px;
+    width: fit-content;
+}
